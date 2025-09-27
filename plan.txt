@@ -1,0 +1,54 @@
+ML Library Choice - scikit-learn vs PyTorch:
+
+scikit-learn is perfect for this project because it's designed for traditional ML tasks like classification/regression with tabular data (which is exactly what you have - player stats, match data, etc.)
+PyTorch is primarily for deep learning (neural networks) and is overkill for this type of problem. You'd use PyTorch if you were doing something like computer vision or natural language processing
+For predicting goalscorers based on historical stats, scikit-learn's algorithms (Random Forest, Gradient Boosting, etc.) will be much more appropriate and easier to implement
+
+Database vs In-Memory:
+You're right that in-memory is simpler to start with. I mentioned databases because Transfermarkt data is quite rich and you might want to:
+
+Cache scraped data to avoid re-scraping the same historical matches
+Build up a dataset over time for better predictions
+But for MVP, in-memory processing with pandas is definitely the way to go!
+
+Proposed Architecture & Development Phases:
+Phase 1: MVP (Statistical Approach)
+Input: "Arsenal vs Chelsea"
+↓
+Scrape historical head-to-head matches
+↓
+Calculate simple stats (goals per game against opponent)
+↓
+Rank players by likelihood
+Phase 2: Enhanced Stats
+
+Add recent form (last 5-10 games)
+Weight recent performance vs historical
+Consider home/away factors
+
+Phase 3: Machine Learning
+
+Use accumulated data to train scikit-learn models
+Features: historical goals, recent form, opponent strength, home/away, etc.
+
+Tech Stack:
+python# Core
+- Python 3.8+
+- requests + BeautifulSoup4 (scraping)
+- pandas (data processing)
+- numpy (numerical operations)
+
+# ML (Phase 3)
+- scikit-learn (Random Forest, XGBoost)
+- matplotlib/seaborn (for analysis/debugging)
+
+# Optional Quality of Life
+- tqdm (progress bars for scraping)
+- click (better command-line interface)
+Project Structure:
+goalscorer_predictor/
+├── scraper.py          # Transfermarkt scraping logic
+├── predictor.py        # Statistical/ML prediction logic  
+├── main.py            # CLI interface
+├── data_processor.py   # Clean and prepare scraped data
+└── utils.py           # Helper functions
