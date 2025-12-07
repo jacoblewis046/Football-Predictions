@@ -115,7 +115,7 @@ def generate_record_url(player: dict, team: dict) -> str:
 
 
 def extract_record_table(url: str) -> DataFrame:
-    """gets rid of unnecessary html and leaves you with the relevant <table> bit"""
+    """extract table for players record against club"""
     soup = get_soup(url)
     table = soup.find("table")
     # print(table.prettify())
