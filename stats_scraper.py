@@ -74,10 +74,6 @@ def find_squad_list(team: dict) -> list[dict]:
             if any(inactive in span.attrs["title"].lower() for inactive in possible_inactive):
                 active = False
 
-        if active:
-            """get player stats table"""
-            df = DataFrame()
-
         players.append({
             "name": player_name.strip(),
             "href": attributes["href"],
@@ -116,7 +112,10 @@ def generate_record_url(player: dict, team: dict) -> str:
 
 
 def generate_form_url(player: dict) -> str:
-    current_year = datetime.now().year
+    date = datetime.now()
+    current_year = date.year
+    if date.month < 9:
+        current_year -= 1
     url = BASE_URL + player["href"]
     url = url.replace("profil", "leistungsdaten") + \
         f"/saison/{current_year}#gesamt"
@@ -210,8 +209,10 @@ def main2():
     players = find_squad_list(teams_list[2])
     print(f"{players[4]["name"]}'s record against {teams_list[4]["title"]}: ")
     # # print(teams_list[4])
+    print(
+        f"************************record_url = generate_record_url({players[4]}, {teams_list[4]})")
+    quit()
     record_url = generate_record_url(players[4], teams_list[4])
-    # print(record_url)
     print(extract_table(record_url))
 
     print(f"{players[4]["name"]}'s recent form: ")
